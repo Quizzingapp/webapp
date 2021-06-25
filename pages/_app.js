@@ -1,5 +1,5 @@
 import UserProvider from '../context/userContext'
-
+import './screens/quiz.css';
 // Custom App to wrap it with context provider
 export default function App({ Component, pageProps }) {
   return (
