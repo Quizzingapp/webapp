@@ -1,8 +1,9 @@
 import Button from "@material-ui/core/Button"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import quizData from "./quiz_data.json"
 import { formatTime } from "../utils/index"
 // import App from './../_app';
+import Link from "next/link"
 import MyAppBar from "../../components/appbar"
 import {
     makeStyles,
@@ -15,6 +16,7 @@ import {
     Checkbox,
     ButtonGroup,
 } from "@material-ui/core"
+
 
 let interval
 
@@ -33,107 +35,130 @@ const useStyles = makeStyles((theme) => ({
         padding: 48,
         marginTop: 16,
     },
+	button: {
+        margin: theme.spacing(1),
+        borderRadius: "5em"
+    },
 }))
 
-const quiz = (/*{ results, time }*/) => {
+const quiz = (props) => {
+    console.log(props.data);
     const classes = useStyles()
-    // const [correctAnswers, setCorrectAnswers] = useState(0);
-    // useEffect(() => {
-    // 	let correct = 0;
-    // 	results.forEach((result, index) => {
-    // 		if(result.a === quizData.data[index].answer) {
-    // 			correct++;
-    // 		}
-    // 	});
-    // 	setCorrectAnswers(correct);
-    // }, []);
-    // const data = [
-    // 	{
-    // 		question: 'Upnishads are books on :',
-    // 		answerOptions: [
-    // 			{ answerText: 'Politics', isCorrect: false },
-    // 			{ answerText: 'Philosophy', isCorrect: true },
-    // 			{ answerText: 'Medicine', isCorrect: false },
-    // 			{ answerText: 'Social Life', isCorrect: false },
-    // 		],
-    // 	},
-    // 	{
-    // 		question: 'Who was the first Indian ruler who had territory outside India?',
-    // 		answerOptions: [
-    // 			{ answerText: 'Huvishka', isCorrect: false },
-    // 			{ answerText: 'Kanishka', isCorrect: true },
-    // 			{ answerText: 'Chandragupta Maurya', isCorrect: false },
-    // 			{ answerText: 'Ashoka', isCorrect: false },
-    // 		],
-    // 	},
-    // 	{
-    // 		question: 'Harihara Raya I who ruled the Vijaynagara Empire for the period 1336-1356 belonged to which dynasty?',
-    // 		answerOptions: [
-    // 			{ answerText: 'Sangama Dynasty', isCorrect: true },
-    // 			{ answerText: 'Saluva Dynasty', isCorrect: false },
-    // 			{ answerText: 'Tuluva Dynasty', isCorrect: false },
-    // 			{ answerText: 'Aravidu Dynasty', isCorrect: false },
-    // 		],
-    // 	},
-    // 	{
-    // 		question: 'Who among the following was worshipped during Early Vedic Civilization?',
-    // 		answerOptions: [
-    // 			{ answerText: 'Varuna', isCorrect: false },
-    // 			{ answerText: 'Indra', isCorrect: false },
-    // 			{ answerText: 'Surya', isCorrect: false },
-    // 			{ answerText: 'All the above', isCorrect: true },
-    // 		],
-    // 	},
-    //     {
-    // 		question: 'Which one of the following was the capital of Kosala?',
-    // 		answerOptions: [
-    // 			{ answerText: 'Shuktimati', isCorrect: false },
-    // 			{ answerText: 'Indraprastha', isCorrect: false },
-    // 			{ answerText: 'Kaushambi', isCorrect: false },
-    // 			{ answerText: 'Sravasti', isCorrect: true },
-    // 		],
-    // 	},
-    // ];
+
+	const [seconds, setSeconds] = useState(150);
+	useEffect(() => {
+		if (seconds > 0) {
+			setTimeout(() => setSeconds(seconds - 1), 1000);
+		} 
+		else {
+			setSeconds('Time Up!');
+			const nextQuestion = currentQuestion + 1
+			if (nextQuestion < quizData.data.length) {
+				setCurrentQuestion(nextQuestion)
+			} else {
+				// clearInterval(interval)
+				setShowScore(true)
+			}
+		}
+	});
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [showScore, setShowScore] = useState(false)
+	// const [time, setTime] = useState(0)
     const [score, setScore] = useState(0)
-    const [time, setTime] = useState(0)
+    // const [timeTaken, setTimeTaken] = useState(0)
     // const [selected, setSelected] = useState('');
     // const [error, setError] = useState('');
 
-    const handleAnswerOptionClick = (isCorrect) => {
-        if (isCorrect) {
-            alert("Correct")
+    const [isFirst, setIsFirst] = useState(false);
+    const [isSecond, setIsSecond] = useState(false);
+    const [isThird, setIsThird] = useState(false);
+    const [isFourth, setIsFourth] = useState(false);
+
+    const handleFirstClick = (isCorrect) => {
+        if(isCorrect){
             setScore(score + 1)
         } else {
-            alert("Wrong")
+            alert("Wrong");
         }
-
-        // const nextQuestion = currentQuestion + 1;
-        // if (nextQuestion < quizData.data.length) {
-        // 	setCurrentQuestion(nextQuestion);
-        // } else {
-        // 	setShowScore(true);
-        // }
+        setIsFirst(prevState => ({
+            isFirst: !prevState.isFirst,
+        }));
+        // setIsFirst(!isFirst);
     }
 
-    const handleStartClick = () => {
-        interval = setInterval(() => {
-            setTime((prevTime) => prevTime + 1)
-        }, 1000)
+    const handleSecondClick = (isCorrect) => {
+        if(isCorrect){
+            setScore(score + 1)
+        } else {
+            alert("Wrong");
+        }
+        setIsSecond(prevState => ({
+            isSecond: !prevState.isSecond,
+        }));
+        // setIsSecond(!isSecond);
     }
 
-    const handleNextClick = (/*e*/) => {
+    const handleThirdClick = (isCorrect) => {
+        if(isCorrect){
+            setScore(score + 1)
+        } else {
+            alert("Wrong");
+        }
+        setIsThird(prevState => ({
+            isThird: !prevState.isThird,
+        }));
+        // setIsThird(!isThird);
+    }
+
+    const handleFourthClick = (isCorrect) => {
+        if(isCorrect){
+            setScore(score + 1)
+        } else {
+            alert("Wrong");
+        }
+        setIsFourth(prevState => ({
+            isFourth: !prevState.isFourth,
+        }));
+        // setIsFourth(!isFourth);
+    }
+
+    // const handleAnswerOptionClick = (isCorrect) => {
+    //     if (isCorrect) {
+    //         alert("Correct")
+    //         setScore(score + 1)
+    //     } else {
+    //         alert("Wrong")
+    //     }
+	// 	// setSelected(e.target.value);
+	// 	// if(error) {
+	// 	// 	setError('');
+	// 	// }
+    //     // const nextQuestion = currentQuestion + 1;
+    //     // if (nextQuestion < quizData.data.length) {
+    //     // 	setCurrentQuestion(nextQuestion);
+    //     // } else {
+    //     // 	setShowScore(true);
+    //     // }
+    // }
+
+    // const handleStartClick = () => {
+    //     interval = setInterval(() => {
+    //         setTime((prevTime) => prevTime + 1)
+    //     }, 1000)
+    // }
+
+    const handleNextClick = (e) => {
         // if(selected === '') {
         // 	return setError('Please select one option!');
         // }
-
+		// setSelected('');
         const nextQuestion = currentQuestion + 1
         if (nextQuestion < quizData.data.length) {
             setCurrentQuestion(nextQuestion)
+            // setChecked(false);
         } else {
-            clearInterval(interval)
+            // clearInterval(interval)
             setShowScore(true)
         }
     }
@@ -171,9 +196,15 @@ const quiz = (/*{ results, time }*/) => {
                                         </strong>
                                         %
                                     </p>
-                                    <p>
+
+                                    {/* <p>
                                         <strong>Time taken: </strong>
                                         {formatTime(time)}
+                                    </p> */}
+
+                                    <p>
+                                        <strong>Time taken: </strong>
+                                        {formatTime(props.data)}
                                     </p>
                                 </div>
                             ) : (
@@ -198,6 +229,20 @@ const quiz = (/*{ results, time }*/) => {
 
                                     <Paper className={classes.questionBox}>
                                         <FormGroup>
+                                            <FormControlLabel label={quizData.data[currentQuestion].answerOptions[0].answerText} 
+                                                control={<Checkbox checked = { isFirst } onChange={() => handleFirstClick(quizData.data[currentQuestion].answerOptions[0].isCorrect)}/>}
+                                            />
+                                            <FormControlLabel label={quizData.data[currentQuestion].answerOptions[1].answerText} 
+                                                control={<Checkbox checked = { isSecond } onChange={() => handleSecondClick(quizData.data[currentQuestion].answerOptions[1].isCorrect)}/>}
+                                            />
+                                            <FormControlLabel label={quizData.data[currentQuestion].answerOptions[2].answerText} 
+                                                control={<Checkbox checked = { isThird } onChange={() => handleThirdClick(quizData.data[currentQuestion].answerOptions[2].isCorrect)}/>}
+                                            />
+                                            <FormControlLabel label={quizData.data[currentQuestion].answerOptions[3].answerText} 
+                                                control={<Checkbox checked = { isFourth } onChange={() => handleFourthClick(quizData.data[currentQuestion].answerOptions[3].isCorrect)}/>}
+                                            />
+                                        </FormGroup>
+                                        {/* <FormGroup>
                                             {quizData.data[
                                                 currentQuestion
                                             ].answerOptions.map(
@@ -206,12 +251,12 @@ const quiz = (/*{ results, time }*/) => {
                                                         label={
                                                             answerOption.answerText
                                                         }
-                                                        control={<Checkbox />}
+                                                        control={<Checkbox checked = { checked } onChange={() => handleAnswerOptionClick(answerOption.isCorrect)}/>}
                                                     />
                                                     // <Button
                                                     //     variant="contained"
                                                     //     color="primary"
-                                                    //     /*onChange={handleOptionChange}*/ onClick={() =>
+                                                    //     /*onChange={handleOptionChange} onClick={() =>
                                                     //         handleAnswerOptionClick(
                                                     //             answerOption.isCorrect
                                                     //         )
@@ -221,26 +266,37 @@ const quiz = (/*{ results, time }*/) => {
                                                     // </Button>
                                                 )
                                             )}
-                                        </FormGroup>
+                                        </FormGroup> */}
                                     </Paper>
                                 </>
                             )}
                         </Container>
 
                         <Container>
-                            <ButtonGroup color="primary" variant="contained">
-                                <Button onClick={handleStartClick}>
+                            <div >
+                                {/* <Button color="primary" variant="contained"  className={classes.button} onClick={handleStartClick} >
                                     Start
+                                </Button> */}
+								<Link href="./result">
+									<Button 
+										color="secondary" 
+										variant="contained"
+										className={classes.button}
+									>
+										Result
+									</Button>
+								</Link>
+								<Button color="primary" variant="contained"  className={classes.button} onClick={handleNextClick} >
+                                    Next
                                 </Button>
-                                <Button color="secondary">Result</Button>
-                                <Button onClick={handleNextClick}>Next</Button>
-                            </ButtonGroup>
+                            </div>
                         </Container>
                     </Grid>
                     <Grid item lg={3} sm={3} xs={12}>
                         <Paper className={classes.mytimer}>
+							{seconds}
                             <Typography variant="h4" component="h1">
-                                Timer
+                                Timer {props.data}
                             </Typography>
                         </Paper>
                         <Paper className={classes.mytimer}>
