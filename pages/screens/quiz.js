@@ -1,8 +1,6 @@
-import Button from "@material-ui/core/Button"
 import React, { useEffect, useState, useRef } from "react"
 import quizData from "./quiz_data.json"
 import { formatTime } from "../utils/index"
-// import App from './../_app';
 import Link from "next/link"
 import MyAppBar from "../../components/appbar"
 import {
@@ -11,14 +9,15 @@ import {
     Typography,
     Paper,
     Grid,
-    FormGroup,
     FormControlLabel,
-    Checkbox,
-    ButtonGroup,
+    Button,
+    Radio,
+    RadioGroup,
+    FormControl,
+    FormLabel,
+    LinearProgress,
+    Box,
 } from "@material-ui/core"
-
-
-let interval
 
 const useStyles = makeStyles((theme) => ({
     questionBox: {
@@ -35,140 +34,53 @@ const useStyles = makeStyles((theme) => ({
         padding: 48,
         marginTop: 16,
     },
-	button: {
+    button: {
         margin: theme.spacing(1),
-        borderRadius: "5em"
+        borderRadius: "5em",
+    },
+    progress: {
+        maxWidth: "90%",
+        margin: theme.spacing(3),
     },
 }))
 
-const quiz = (props) => {
-    console.log(props.data);
+const quiz = () => {
     const classes = useStyles()
+    const [seconds, setSeconds] = useState(10)
 
-	const [seconds, setSeconds] = useState(150);
-	useEffect(() => {
-		if (seconds > 0) {
-			setTimeout(() => setSeconds(seconds - 1), 1000);
-		} 
-		else {
-			setSeconds('Time Up!');
-			const nextQuestion = currentQuestion + 1
-			if (nextQuestion < quizData.data.length) {
-				setCurrentQuestion(nextQuestion)
-			} else {
-				// clearInterval(interval)
-				setShowScore(true)
-			}
-		}
-	});
+    useEffect(() => {
+        if (seconds > 0) {
+            setTimeout(() => setSeconds(seconds - 1), 1000)
+        } else {
+            // const nextQuestion = currentQuestion + 1
+            // if (nextQuestion < quizData.data.length) {
+            //     setCurrentQuestion(nextQuestion)
+            // } else {
+            //     setShowScore(true)
+            // }
+            setShowScore(true)
+        }
+    })
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [showScore, setShowScore] = useState(false)
-	// const [time, setTime] = useState(0)
     const [score, setScore] = useState(0)
-    // const [timeTaken, setTimeTaken] = useState(0)
-    // const [selected, setSelected] = useState('');
-    // const [error, setError] = useState('');
-
-    const [isFirst, setIsFirst] = useState(false);
-    const [isSecond, setIsSecond] = useState(false);
-    const [isThird, setIsThird] = useState(false);
-    const [isFourth, setIsFourth] = useState(false);
-
-    const handleFirstClick = (isCorrect) => {
-        if(isCorrect){
-            setScore(score + 1)
-        } else {
-            alert("Wrong");
-        }
-        setIsFirst(prevState => ({
-            isFirst: !prevState.isFirst,
-        }));
-        // setIsFirst(!isFirst);
-    }
-
-    const handleSecondClick = (isCorrect) => {
-        if(isCorrect){
-            setScore(score + 1)
-        } else {
-            alert("Wrong");
-        }
-        setIsSecond(prevState => ({
-            isSecond: !prevState.isSecond,
-        }));
-        // setIsSecond(!isSecond);
-    }
-
-    const handleThirdClick = (isCorrect) => {
-        if(isCorrect){
-            setScore(score + 1)
-        } else {
-            alert("Wrong");
-        }
-        setIsThird(prevState => ({
-            isThird: !prevState.isThird,
-        }));
-        // setIsThird(!isThird);
-    }
-
-    const handleFourthClick = (isCorrect) => {
-        if(isCorrect){
-            setScore(score + 1)
-        } else {
-            alert("Wrong");
-        }
-        setIsFourth(prevState => ({
-            isFourth: !prevState.isFourth,
-        }));
-        // setIsFourth(!isFourth);
-    }
-
-    // const handleAnswerOptionClick = (isCorrect) => {
-    //     if (isCorrect) {
-    //         alert("Correct")
-    //         setScore(score + 1)
-    //     } else {
-    //         alert("Wrong")
-    //     }
-	// 	// setSelected(e.target.value);
-	// 	// if(error) {
-	// 	// 	setError('');
-	// 	// }
-    //     // const nextQuestion = currentQuestion + 1;
-    //     // if (nextQuestion < quizData.data.length) {
-    //     // 	setCurrentQuestion(nextQuestion);
-    //     // } else {
-    //     // 	setShowScore(true);
-    //     // }
-    // }
-
-    // const handleStartClick = () => {
-    //     interval = setInterval(() => {
-    //         setTime((prevTime) => prevTime + 1)
-    //     }, 1000)
-    // }
 
     const handleNextClick = (e) => {
-        // if(selected === '') {
-        // 	return setError('Please select one option!');
-        // }
-		// setSelected('');
+        setValue(null)
         const nextQuestion = currentQuestion + 1
         if (nextQuestion < quizData.data.length) {
             setCurrentQuestion(nextQuestion)
-            // setChecked(false);
         } else {
-            // clearInterval(interval)
             setShowScore(true)
         }
     }
 
-    // const handleOptionChange = (e) => {
-    // 	setSelected(e.target.value);
-    // 	if(error) {
-    // 	  setError('');
-    // 	}
-    // };
+    const [value, setValue] = useState(null)
+
+    const handleChangeOption = (e) => {
+        setValue(e.target.value)
+    }
 
     return (
         <>
@@ -179,10 +91,29 @@ const quiz = (props) => {
                         <Typography variant="h4" component="h1">
                             Quiz
                         </Typography>
+                        {!showScore && (
+                            <Box className={classes.progress}>
+                                {" "}
+                                <LinearProgress
+                                    variant="determinate"
+                                    value={seconds * 10}
+                                />{" "}
+                            </Box>
+                        )}
 
                         <Container>
                             {showScore ? (
                                 <div className="score-section">
+                                    {showScore && (
+                                        <Typography
+                                            align="center"
+                                            variant="h4"
+                                            component="h1"
+                                        >
+                                            Time's Up!
+                                        </Typography>
+                                    )}
+
                                     <p>
                                         You answered {score} out of{" "}
                                         {quizData.data.length} correctly
@@ -196,15 +127,8 @@ const quiz = (props) => {
                                         </strong>
                                         %
                                     </p>
-
-                                    {/* <p>
-                                        <strong>Time taken: </strong>
-                                        {formatTime(time)}
-                                    </p> */}
-
                                     <p>
                                         <strong>Time taken: </strong>
-                                        {formatTime(props.data)}
                                     </p>
                                 </div>
                             ) : (
@@ -221,82 +145,64 @@ const quiz = (props) => {
                                             }
                                         </Typography>
                                     </Paper>
-                                    {/* <div className='answer-section'>
-							{quizData.data[currentQuestion].answerOptions.map((answerOption) => (
-								<Button variant="contained" color="primary" onClick={() => handleAnswerOptionClick(answerOption.isCorrect)}>{answerOption.answerText}</Button>
-							))}
-						</div> */}
-
                                     <Paper className={classes.questionBox}>
-                                        <FormGroup>
-                                            <FormControlLabel label={quizData.data[currentQuestion].answerOptions[0].answerText} 
-                                                control={<Checkbox checked = { isFirst } onChange={() => handleFirstClick(quizData.data[currentQuestion].answerOptions[0].isCorrect)}/>}
-                                            />
-                                            <FormControlLabel label={quizData.data[currentQuestion].answerOptions[1].answerText} 
-                                                control={<Checkbox checked = { isSecond } onChange={() => handleSecondClick(quizData.data[currentQuestion].answerOptions[1].isCorrect)}/>}
-                                            />
-                                            <FormControlLabel label={quizData.data[currentQuestion].answerOptions[2].answerText} 
-                                                control={<Checkbox checked = { isThird } onChange={() => handleThirdClick(quizData.data[currentQuestion].answerOptions[2].isCorrect)}/>}
-                                            />
-                                            <FormControlLabel label={quizData.data[currentQuestion].answerOptions[3].answerText} 
-                                                control={<Checkbox checked = { isFourth } onChange={() => handleFourthClick(quizData.data[currentQuestion].answerOptions[3].isCorrect)}/>}
-                                            />
-                                        </FormGroup>
-                                        {/* <FormGroup>
-                                            {quizData.data[
-                                                currentQuestion
-                                            ].answerOptions.map(
-                                                (answerOption) => (
-                                                    <FormControlLabel
-                                                        label={
-                                                            answerOption.answerText
-                                                        }
-                                                        control={<Checkbox checked = { checked } onChange={() => handleAnswerOptionClick(answerOption.isCorrect)}/>}
-                                                    />
-                                                    // <Button
-                                                    //     variant="contained"
-                                                    //     color="primary"
-                                                    //     /*onChange={handleOptionChange} onClick={() =>
-                                                    //         handleAnswerOptionClick(
-                                                    //             answerOption.isCorrect
-                                                    //         )
-                                                    //     }
-                                                    // >
-                                                    //     {answerOption.answerText}
-                                                    // </Button>
-                                                )
-                                            )}
-                                        </FormGroup> */}
+                                        <FormControl component="fieldset">
+                                            <FormLabel component="legend">
+                                                Answers
+                                            </FormLabel>
+                                            <RadioGroup
+                                                value={value}
+                                                onChange={handleChangeOption}
+                                            >
+                                                {quizData.data[
+                                                    currentQuestion
+                                                ].answerOptions.map(
+                                                    (answerOption) => (
+                                                        <FormControlLabel
+                                                            value={
+                                                                answerOption.answerText
+                                                            }
+                                                            label={
+                                                                answerOption.answerText
+                                                            }
+                                                            control={<Radio />}
+                                                        />
+                                                    )
+                                                )}
+                                            </RadioGroup>
+                                        </FormControl>
                                     </Paper>
                                 </>
                             )}
                         </Container>
-
-                        <Container>
-                            <div >
-                                {/* <Button color="primary" variant="contained"  className={classes.button} onClick={handleStartClick} >
-                                    Start
-                                </Button> */}
-								<Link href="./result">
-									<Button 
-										color="secondary" 
-										variant="contained"
-										className={classes.button}
-									>
-										Result
-									</Button>
-								</Link>
-								<Button color="primary" variant="contained"  className={classes.button} onClick={handleNextClick} >
-                                    Next
-                                </Button>
-                            </div>
-                        </Container>
+                        {!showScore && (
+                            <Container>
+                                <div>
+                                    <Link href="./result">
+                                        <Button
+                                            color="secondary"
+                                            variant="contained"
+                                            className={classes.button}
+                                        >
+                                            Result
+                                        </Button>
+                                    </Link>
+                                    <Button
+                                        color="primary"
+                                        variant="contained"
+                                        className={classes.button}
+                                        onClick={handleNextClick}
+                                    >
+                                        Next
+                                    </Button>
+                                </div>
+                            </Container>
+                        )}
                     </Grid>
                     <Grid item lg={3} sm={3} xs={12}>
                         <Paper className={classes.mytimer}>
-							{seconds}
-                            <Typography variant="h4" component="h1">
-                                Timer {props.data}
+                            <Typography variant="h5" component="h1">
+                                Time left : {seconds} s
                             </Typography>
                         </Paper>
                         <Paper className={classes.mytimer}>

@@ -99,6 +99,7 @@ const quiz = () => {
                         <Paper className={classes.board}>
                             <Typography
                                 variant="h6"
+                                align="center"
                                 style={{
                                     fontWeight: 600,
                                     padding: 8,

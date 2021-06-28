@@ -4,8 +4,8 @@ import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
 import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
-import IconButton from "@material-ui/core/IconButton"
-import MenuIcon from "@material-ui/icons/Menu"
+import Link from "next/link"
+import { useUser } from "../context/userContext"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ButtonAppBar() {
     const classes = useStyles()
-
+    const { user } = useUser()
     return (
         <div className={classes.root}>
             <AppBar position="sticky">
@@ -39,7 +39,13 @@ export default function ButtonAppBar() {
                     <Typography variant="h5" className={classes.title}>
                         Quizz
                     </Typography>
-                    <Button color="inherit">Login / SignUp</Button>
+                    {user === null ? (
+                        <Link href="./login">
+                            <Button color="inherit">Login / SignUp</Button>
+                        </Link>
+                    ) : (
+                        <Button color="inherit">Logout</Button>
+                    )}
                 </Toolbar>
             </AppBar>
         </div>
