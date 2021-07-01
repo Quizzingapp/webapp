@@ -11,7 +11,11 @@ import {
     Paper,
     Grid,
     FormGroup,
+    FormControl,
+    FormLabel,
     FormControlLabel,
+    Radio,
+    RadioGroup,
     Checkbox,
     ButtonGroup,
 } from "@material-ui/core"
@@ -122,6 +126,31 @@ const result = () => {
                 </Paper>
 
                 <Paper className={classes.questionBox}>
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">
+                            Answers
+                        </FormLabel>
+                        <RadioGroup >
+                            {quizData.data[
+                                currentQuestion
+                            ].answerOptions.map(
+                                (answerOption) => (
+                                    <FormControlLabel
+                                        value="disabled"
+                                        // value={
+                                        //     answerOption.answerText
+                                        // }
+                                        label={
+                                            answerOption.answerText
+                                        }
+                                        disabled control={<Radio />}
+                                    />
+                                )
+                            )}
+                        </RadioGroup>
+                    </FormControl>
+                </Paper>
+                {/* <Paper className={classes.questionBox}>
                     <FormGroup>
                         {quizData.data[
                             currentQuestion
@@ -136,7 +165,7 @@ const result = () => {
                             )
                         )}
                     </FormGroup>
-                </Paper>
+                </Paper> */}
                 </Grid>
                     <Grid item lg={3} sm={3} xs={12}>
                         <Paper className={classes.mytimer}>

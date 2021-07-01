@@ -19,6 +19,8 @@ import {
     Box,
 } from "@material-ui/core"
 
+let totalTime = 30;
+
 const useStyles = makeStyles((theme) => ({
     questionBox: {
         height: "auto",
@@ -46,18 +48,13 @@ const useStyles = makeStyles((theme) => ({
 
 const quiz = () => {
     const classes = useStyles()
-    const [seconds, setSeconds] = useState(10)
+    const [seconds, setSeconds] = useState(30)
+    const [changeTime, setChangeTime] = useState(true)
 
     useEffect(() => {
-        if (seconds > 0) {
+        if (seconds > 0 && changeTime) {
             setTimeout(() => setSeconds(seconds - 1), 1000)
         } else {
-            // const nextQuestion = currentQuestion + 1
-            // if (nextQuestion < quizData.data.length) {
-            //     setCurrentQuestion(nextQuestion)
-            // } else {
-            //     setShowScore(true)
-            // }
             setShowScore(true)
         }
     })
@@ -72,6 +69,7 @@ const quiz = () => {
         if (nextQuestion < quizData.data.length) {
             setCurrentQuestion(nextQuestion)
         } else {
+            setChangeTime(false);
             setShowScore(true)
         }
     }
@@ -80,6 +78,12 @@ const quiz = () => {
 
     const handleChangeOption = (e) => {
         setValue(e.target.value)
+    }
+
+    const handleAnswerOptionClick = (isCorrect) => {
+        if(isCorrect){
+            setScore(score + 1);
+        }
     }
 
     return (
@@ -96,7 +100,7 @@ const quiz = () => {
                                 {" "}
                                 <LinearProgress
                                     variant="determinate"
-                                    value={seconds * 10}
+                                    value={seconds * 10/3}
                                 />{" "}
                             </Box>
                         )}
@@ -110,7 +114,7 @@ const quiz = () => {
                                             variant="h4"
                                             component="h1"
                                         >
-                                            Time's Up!
+                                            Quiz Done!
                                         </Typography>
                                     )}
 
@@ -128,7 +132,7 @@ const quiz = () => {
                                         %
                                     </p>
                                     <p>
-                                        <strong>Time taken: </strong>
+                                        <strong>Time taken: </strong> {totalTime-seconds}s
                                     </p>
                                 </div>
                             ) : (
@@ -165,7 +169,7 @@ const quiz = () => {
                                                             label={
                                                                 answerOption.answerText
                                                             }
-                                                            control={<Radio />}
+                                                            control={<Radio onChange={() => handleAnswerOptionClick(answerOption.isCorrect)}/>}
                                                         />
                                                     )
                                                 )}
@@ -178,15 +182,6 @@ const quiz = () => {
                         {!showScore && (
                             <Container>
                                 <div>
-                                    <Link href="./result">
-                                        <Button
-                                            color="secondary"
-                                            variant="contained"
-                                            className={classes.button}
-                                        >
-                                            Result
-                                        </Button>
-                                    </Link>
                                     <Button
                                         color="primary"
                                         variant="contained"
@@ -198,11 +193,26 @@ const quiz = () => {
                                 </div>
                             </Container>
                         )}
+                        {showScore && (
+                            <Container>
+                                <div>
+                                    <Link href="./result">
+                                        <Button
+                                            color="secondary"
+                                            variant="contained"
+                                            className={classes.button}
+                                        >
+                                            Result
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </Container>
+                        )}
                     </Grid>
                     <Grid item lg={3} sm={3} xs={12}>
                         <Paper className={classes.mytimer}>
                             <Typography variant="h5" component="h1">
-                                Time left : {seconds} s
+                                Time left : {seconds}s
                             </Typography>
                         </Paper>
                         <Paper className={classes.mytimer}>
