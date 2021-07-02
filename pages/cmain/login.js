@@ -76,6 +76,21 @@ export default function Login() {
             })
     }
 
+    const handleForgotPassword = () => {
+        if (form.email == "") {
+            alert("Please enter the valid email to reset the password.")
+            return
+        } else {
+            firebase
+                .auth()
+                .sendPasswordResetEmail(form.email)
+                .then(() =>
+                    alert("Password reset email sent. Please check your inbox.")
+                )
+                .catch((error) => alert(error))
+        }
+    }
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -128,8 +143,13 @@ export default function Login() {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link href="./quiz" variant="body2">
-                                <Hot color="secondary">Forgot password?</Hot>
+                            <Link href="#" variant="body2">
+                                <Hot
+                                    onClick={handleForgotPassword}
+                                    color="secondary"
+                                >
+                                    Forgot password?
+                                </Hot>
                             </Link>
                         </Grid>
                         <Grid item>

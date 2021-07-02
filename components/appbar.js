@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
 import Link from "next/link"
 import { useUser } from "../context/userContext"
+import firebase from "../firebase/clientApp"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,6 +25,11 @@ const useStyles = makeStyles((theme) => ({
 export default function ButtonAppBar() {
     const classes = useStyles()
     const { user } = useUser()
+
+    const handleClick = () => {
+        firebase.auth().signOut()
+    }
+
     return (
         <div className={classes.root}>
             <AppBar position="sticky">
@@ -44,7 +50,9 @@ export default function ButtonAppBar() {
                             <Button color="inherit">Login / SignUp</Button>
                         </Link>
                     ) : (
-                        <Button color="inherit">Logout</Button>
+                        <Button color="inherit" onClick={handleClick}>
+                            Logout
+                        </Button>
                     )}
                 </Toolbar>
             </AppBar>

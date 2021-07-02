@@ -2,7 +2,7 @@
     "data": [
         {
             "question": "Upnishads are books on :",
-			"answerOptions": [
+            "answerOptions": [
                 { "answerText": "Politics", "isCorrect": false },
                 { "answerText": "Philosophy", "isCorrect": true },
                 { "answerText": "Medicine", "isCorrect": false },
@@ -18,7 +18,9 @@
 				{ "answerText": "Chandragupta Maurya", "isCorrect": false },
 				{ "answerText": "Ashoka", "isCorrect": false }
 			],
-			"answer": "Kanishka"
+			"answer": "Kanishka",
+			"createdBy": "creator",
+            "tags": ["india", "history"]
 		},
 		{
 			"question": "Harihara Raya I who ruled the Vijaynagara Empire for the period 1336-1356 belonged to which dynasty?",
@@ -28,7 +30,9 @@
 				{ "answerText": "Tuluva Dynasty", "isCorrect": false },
 				{ "answerText": "Aravidu Dynasty", "isCorrect": false }
 			],
-			"answer": "Sangama Dynasty"
+			"answer": "Sangama Dynasty",
+			"createdBy": "creator",
+            "tags": ["india", "history", "hindu"]
 		},
 		{
 			"question": "Who among the following was worshipped during Early Vedic Civilization?",
@@ -38,7 +42,9 @@
 				{ "answerText": "Surya", "isCorrect": false },
 				{ "answerText": "All the above", "isCorrect": true }
 			],
-			"answer": "All the above"
+			"answer": "All the above",
+			"createdBy": "creator",
+            "tags": ["india", "history"]
 		},
         {
 			"question": "Which one of the following was the capital of Kosala?",
@@ -48,7 +54,9 @@
 				{ "answerText": "Kaushambi", "isCorrect": false },
 				{ "answerText": "Sravasti", "isCorrect": true }
 			],
-			"answer": "Sravasti"
-		}
+			"answer": "Sravasti",
+			"createdBy": "creator",
+            "tags": ["india", "history", "hindu"]
+        }
     ]
 }

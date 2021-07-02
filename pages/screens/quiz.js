@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react"
 import quizData from "./quiz_data.json"
 import Modal from '@material-ui/core/Modal';
+import { formatTime } from "../utils/index"
+import firebase from "../../firebase/clientApp"
 import Link from "next/link"
 import MyAppBar from "../../components/appbar"
 import List from '@material-ui/core/List';
@@ -29,7 +31,7 @@ import {
     Box,
 } from "@material-ui/core"
 
-let totalTime = 30;
+let totalTime = 30
 
 function rand() {
     return Math.round(Math.random() * 20) - 10;
@@ -85,6 +87,19 @@ const quiz = () => {
     const [seconds, setSeconds] = useState(30)
     const [changeTime, setChangeTime] = useState(true)
     const [modalStyle] = React.useState(getModalStyle);
+    const [questions, setQuestions] = useState([])
+
+    useEffect(() => {
+        const db = firebase.firestore()
+        db.collection("questions")
+            .where("tags", "array-contains", "hindu")
+            .get()
+            .then((dataSnapshot) =>
+                dataSnapshot.docs.forEach((doc) =>
+                    setQuestions((prevState) => [...prevState, doc.data()])
+                )
+            )
+    }, [])
 
     useEffect(() => {
         if (seconds > 0 && changeTime) {
@@ -93,7 +108,6 @@ const quiz = () => {
             setShowScore(true)
         }
     })
-
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [showScore, setShowScore] = useState(false)
     const [score, setScore] = useState(0)
@@ -143,11 +157,11 @@ const quiz = () => {
         // console.log(ansSelected);
         setAnswers(prevState => [...prevState, { q: quizData.data[currentQuestion].question, o: options, t: selected, s: ansSelected, a: correctAnswer }])
         const nextQuestion = currentQuestion + 1
-        if (nextQuestion < quizData.data.length) {
+        if (nextQuestion < questions.length) {
             setCurrentQuestion(nextQuestion)
             // console.log("If lopala currentQuestion: "+ currentQuestion);
         } else {
-            setChangeTime(false);
+            setChangeTime(false)
             setShowScore(true)
         }  
         setSelected('');
@@ -254,7 +268,7 @@ const quiz = () => {
                                 {" "}
                                 <LinearProgress
                                     variant="determinate"
-                                    value={seconds * 10/3}
+                                    value={(seconds * 10) / 3}
                                 />{" "}
                             </Box>
                         )}
@@ -286,7 +300,8 @@ const quiz = () => {
                                         %
                                     </p>
                                     <p>
-                                        <strong>Time taken: </strong> {totalTime-seconds}s
+                                        <strong>Time taken: </strong>{" "}
+                                        {totalTime - seconds}s
                                     </p>
                                 </div>
                             ) : (
@@ -297,10 +312,9 @@ const quiz = () => {
                                     </Typography>
                                     <Paper className={classes.questionBox}>
                                         <Typography variant="h6" component="h1">
-                                            {
-                                                quizData.data[currentQuestion]
-                                                    .question
-                                            }
+                                            {questions.length &&
+                                                questions[currentQuestion]
+                                                    .question}
                                         </Typography>
                                     </Paper>
                                     <Paper className={classes.questionBox}>
