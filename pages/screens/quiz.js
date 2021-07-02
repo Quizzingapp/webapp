@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react"
 import quizData from "./quiz_data.json"
 import { formatTime } from "../utils/index"
+import firebase from "../../firebase/clientApp"
 import Link from "next/link"
 import MyAppBar from "../../components/appbar"
 import {
@@ -19,7 +20,7 @@ import {
     Box,
 } from "@material-ui/core"
 
-let totalTime = 30;
+let totalTime = 30
 
 const useStyles = makeStyles((theme) => ({
     questionBox: {
@@ -50,6 +51,19 @@ const quiz = () => {
     const classes = useStyles()
     const [seconds, setSeconds] = useState(30)
     const [changeTime, setChangeTime] = useState(true)
+    const [questions, setQuestions] = useState([])
+
+    useEffect(() => {
+        const db = firebase.firestore()
+        db.collection("questions")
+            .where("tags", "array-contains", "hindu")
+            .get()
+            .then((dataSnapshot) =>
+                dataSnapshot.docs.forEach((doc) =>
+                    setQuestions((prevState) => [...prevState, doc.data()])
+                )
+            )
+    }, [])
 
     useEffect(() => {
         if (seconds > 0 && changeTime) {
@@ -58,7 +72,6 @@ const quiz = () => {
             setShowScore(true)
         }
     })
-
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [showScore, setShowScore] = useState(false)
     const [score, setScore] = useState(0)
@@ -66,10 +79,10 @@ const quiz = () => {
     const handleNextClick = (e) => {
         setValue(null)
         const nextQuestion = currentQuestion + 1
-        if (nextQuestion < quizData.data.length) {
+        if (nextQuestion < questions.length) {
             setCurrentQuestion(nextQuestion)
         } else {
-            setChangeTime(false);
+            setChangeTime(false)
             setShowScore(true)
         }
     }
@@ -81,8 +94,8 @@ const quiz = () => {
     }
 
     const handleAnswerOptionClick = (isCorrect) => {
-        if(isCorrect){
-            setScore(score + 1);
+        if (isCorrect) {
+            setScore(score + 1)
         }
     }
 
@@ -100,7 +113,7 @@ const quiz = () => {
                                 {" "}
                                 <LinearProgress
                                     variant="determinate"
-                                    value={seconds * 10/3}
+                                    value={(seconds * 10) / 3}
                                 />{" "}
                             </Box>
                         )}
@@ -132,7 +145,8 @@ const quiz = () => {
                                         %
                                     </p>
                                     <p>
-                                        <strong>Time taken: </strong> {totalTime-seconds}s
+                                        <strong>Time taken: </strong>{" "}
+                                        {totalTime - seconds}s
                                     </p>
                                 </div>
                             ) : (
@@ -143,10 +157,9 @@ const quiz = () => {
                                     </Typography>
                                     <Paper className={classes.questionBox}>
                                         <Typography variant="h6" component="h1">
-                                            {
-                                                quizData.data[currentQuestion]
-                                                    .question
-                                            }
+                                            {questions.length &&
+                                                questions[currentQuestion]
+                                                    .question}
                                         </Typography>
                                     </Paper>
                                     <Paper className={classes.questionBox}>
@@ -158,21 +171,30 @@ const quiz = () => {
                                                 value={value}
                                                 onChange={handleChangeOption}
                                             >
-                                                {quizData.data[
-                                                    currentQuestion
-                                                ].answerOptions.map(
-                                                    (answerOption) => (
-                                                        <FormControlLabel
-                                                            value={
-                                                                answerOption.answerText
-                                                            }
-                                                            label={
-                                                                answerOption.answerText
-                                                            }
-                                                            control={<Radio onChange={() => handleAnswerOptionClick(answerOption.isCorrect)}/>}
-                                                        />
-                                                    )
-                                                )}
+                                                {questions.length &&
+                                                    questions[
+                                                        currentQuestion
+                                                    ].answerOptions.map(
+                                                        (answerOption) => (
+                                                            <FormControlLabel
+                                                                value={
+                                                                    answerOption.answerText
+                                                                }
+                                                                label={
+                                                                    answerOption.answerText
+                                                                }
+                                                                control={
+                                                                    <Radio
+                                                                        onChange={() =>
+                                                                            handleAnswerOptionClick(
+                                                                                answerOption.isCorrect
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                }
+                                                            />
+                                                        )
+                                                    )}
                                             </RadioGroup>
                                         </FormControl>
                                     </Paper>

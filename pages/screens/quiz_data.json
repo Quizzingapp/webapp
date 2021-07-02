@@ -2,48 +2,58 @@
     "data": [
         {
             "question": "Upnishads are books on :",
-			"answerOptions": [
+            "answerOptions": [
                 { "answerText": "Politics", "isCorrect": false },
                 { "answerText": "Philosophy", "isCorrect": true },
                 { "answerText": "Medicine", "isCorrect": false },
                 { "answerText": "Social Life", "isCorrect": false }
-            ]
+            ],
+            "createdBy": "creator",
+            "tags": ["india", "history", "hindu"]
         },
         {
-			"question": "Who was the first Indian ruler who had territory outside India?",
-			"answerOptions": [
-				{ "answerText": "Huvishka", "isCorrect": false },
-				{ "answerText": "Kanishka", "isCorrect": true },
-				{ "answerText": "Chandragupta Maurya", "isCorrect": false },
-				{ "answerText": "Ashoka", "isCorrect": false }
-			]
-		},
-		{
-			"question": "Harihara Raya I who ruled the Vijaynagara Empire for the period 1336-1356 belonged to which dynasty?",
-			"answerOptions": [
-				{ "answerText": "Sangama Dynasty", "isCorrect": true },
-				{ "answerText": "Saluva Dynasty", "isCorrect": false },
-				{ "answerText": "Tuluva Dynasty", "isCorrect": false },
-				{ "answerText": "Aravidu Dynasty", "isCorrect": false }
-			]
-		},
-		{
-			"question": "Who among the following was worshipped during Early Vedic Civilization?",
-			"answerOptions": [
-				{ "answerText": "Varuna", "isCorrect": false },
-				{ "answerText": "Indra", "isCorrect": false },
-				{ "answerText": "Surya", "isCorrect": false },
-				{ "answerText": "All the above", "isCorrect": true }
-			]
-		},
+            "question": "Who was the first Indian ruler who had territory outside India?",
+            "answerOptions": [
+                { "answerText": "Huvishka", "isCorrect": false },
+                { "answerText": "Kanishka", "isCorrect": true },
+                { "answerText": "Chandragupta Maurya", "isCorrect": false },
+                { "answerText": "Ashoka", "isCorrect": false }
+            ],
+            "createdBy": "creator",
+            "tags": ["india", "history"]
+        },
         {
-			"question": "Which one of the following was the capital of Kosala?",
-			"answerOptions": [
-				{ "answerText": "Shuktimati", "isCorrect": false },
-				{ "answerText": "Indraprastha", "isCorrect": false },
-				{ "answerText": "Kaushambi", "isCorrect": false },
-				{ "answerText": "Sravasti", "isCorrect": true }
-			]
-		}
+            "question": "Harihara Raya I who ruled the Vijaynagara Empire for the period 1336-1356 belonged to which dynasty?",
+            "answerOptions": [
+                { "answerText": "Sangama Dynasty", "isCorrect": true },
+                { "answerText": "Saluva Dynasty", "isCorrect": false },
+                { "answerText": "Tuluva Dynasty", "isCorrect": false },
+                { "answerText": "Aravidu Dynasty", "isCorrect": false }
+            ],
+            "createdBy": "creator",
+            "tags": ["india", "history", "hindu"]
+        },
+        {
+            "question": "Who among the following was worshipped during Early Vedic Civilization?",
+            "answerOptions": [
+                { "answerText": "Varuna", "isCorrect": false },
+                { "answerText": "Indra", "isCorrect": false },
+                { "answerText": "Surya", "isCorrect": false },
+                { "answerText": "All the above", "isCorrect": true }
+            ],
+            "createdBy": "creator",
+            "tags": ["india", "history"]
+        },
+        {
+            "question": "Which one of the following was the capital of Kosala?",
+            "answerOptions": [
+                { "answerText": "Shuktimati", "isCorrect": false },
+                { "answerText": "Indraprastha", "isCorrect": false },
+                { "answerText": "Kaushambi", "isCorrect": false },
+                { "answerText": "Sravasti", "isCorrect": true }
+            ],
+            "createdBy": "creator",
+            "tags": ["india", "history"]
+        }
     ]
 }
