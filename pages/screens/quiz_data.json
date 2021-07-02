@@ -7,7 +7,8 @@
                 { "answerText": "Philosophy", "isCorrect": true },
                 { "answerText": "Medicine", "isCorrect": false },
                 { "answerText": "Social Life", "isCorrect": false }
-            ]
+            ],
+			"answer": "Philosophy"
         },
         {
 			"question": "Who was the first Indian ruler who had territory outside India?",
@@ -16,7 +17,8 @@
 				{ "answerText": "Kanishka", "isCorrect": true },
 				{ "answerText": "Chandragupta Maurya", "isCorrect": false },
 				{ "answerText": "Ashoka", "isCorrect": false }
-			]
+			],
+			"answer": "Kanishka"
 		},
 		{
 			"question": "Harihara Raya I who ruled the Vijaynagara Empire for the period 1336-1356 belonged to which dynasty?",
@@ -25,7 +27,8 @@
 				{ "answerText": "Saluva Dynasty", "isCorrect": false },
 				{ "answerText": "Tuluva Dynasty", "isCorrect": false },
 				{ "answerText": "Aravidu Dynasty", "isCorrect": false }
-			]
+			],
+			"answer": "Sangama Dynasty"
 		},
 		{
 			"question": "Who among the following was worshipped during Early Vedic Civilization?",
@@ -34,7 +37,8 @@
 				{ "answerText": "Indra", "isCorrect": false },
 				{ "answerText": "Surya", "isCorrect": false },
 				{ "answerText": "All the above", "isCorrect": true }
-			]
+			],
+			"answer": "All the above"
 		},
         {
 			"question": "Which one of the following was the capital of Kosala?",
@@ -43,7 +47,8 @@
 				{ "answerText": "Indraprastha", "isCorrect": false },
 				{ "answerText": "Kaushambi", "isCorrect": false },
 				{ "answerText": "Sravasti", "isCorrect": true }
-			]
+			],
+			"answer": "Sravasti"
 		}
     ]
 }

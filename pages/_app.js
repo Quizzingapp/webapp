@@ -5,7 +5,8 @@ import { ThemeProvider } from "@material-ui/core/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import theme from "./theme"
 import UserContext from "../context/userContext"
-import Typography from "@material-ui/core/Typography"
+// import quizData from "../pages/screens/quiz_data.json"
+// import quiz from './screens/quiz'
 
 export default function MyApp(props) {
     const { Component, pageProps } = props

@@ -13,7 +13,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import quiz from './quiz';
 
 let interval
 
@@ -93,12 +92,12 @@ const quizInstructions = () => {
                         </Paper>
 
                         <Link href="./quiz">
-                            <Button color="primary" variant="contained"  className={classes.button} onClick={handleStartClick} >
+                            <Button color="primary" variant="contained"  className={classes.button} onClick={() => handleStartClick} >
                                 Start
                             </Button>
                         </Link>
 
-                        {/* <quiz data={ this.handleStartClick } /> */}
+                        {/* <QuizH data={quizData.data[0].question}/> */}
 
                     </Typography>
                     
