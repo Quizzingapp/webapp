@@ -11,6 +11,7 @@ import {
 import React from "react"
 import MyAppBar from "../../components/appbar"
 import { list } from "../../components/displayitem"
+import { useRouter } from "next/router"
 
 const useStyles = makeStyles((theme) => ({
     board: {
@@ -41,6 +42,11 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function quizitem() {
+    const router = useRouter()
+    const { item } = router.query
+
+    const data = JSON.parse(item)
+
     const classes = useStyles()
     return (
         <>
@@ -53,13 +59,14 @@ function quizitem() {
                 <Grid container spacing={5}>
                     <Grid item xs={12} lg={9}>
                         <Typography variant="h3" component="h1">
-                            True/False
+                            {data.name}
                         </Typography>
                         <Paper className={classes.des}>
                             <Typography>
-                                In this section you have to choose either true
+                                {/* In this section you have to choose either true
                                 or false. Each question will comprise of 10
-                                points.
+                                points. */}
+                                {data.description}
                             </Typography>
                         </Paper>
                         <Grid container spacing={4} style={{ marginTop: 24 }}>

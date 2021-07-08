@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import MyAppBar from "../../components/appbar"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import Typography from "@material-ui/core/Typography"
@@ -12,6 +12,7 @@ import NavigateNextRoundedIcon from "@material-ui/icons/NavigateNextRounded"
 import Card from "@material-ui/core/Card"
 import { CardContent } from "@material-ui/core"
 import Link from "next/link"
+import firebase from "../../firebase/clientApp"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,16 +42,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const quiz = () => {
+const quiz = ({ data }) => {
     const classes = useStyles()
-    const gridItem = [
-        { title: "True/False" },
-        { title: "One Minute" },
-        { title: "Quiz" },
-        { title: "Brain Teaser" },
-        { title: "Current Affairs" },
-        { title: "Match Words" },
-    ]
+    // const gridItem = [
+    //     { title: "True or False" },
+    //     { title: "One Minute" },
+    //     { title: "Quiz" },
+    //     { title: "Brain Teaser" },
+    //     { title: "Current Affairs" },
+    //     { title: "Match Words" },
+    // ]
+
     return (
         <>
             <MyAppBar />
@@ -75,10 +77,17 @@ const quiz = () => {
                             </IconButton>
                         </Paper>
                         <Grid container spacing={3} style={{ marginTop: 24 }}>
-                            {gridItem.map((item) => (
+                            {data.map((item) => (
                                 <Grid item lg={4} sm={6} xs={12}>
                                     <Card>
-                                        <Link href="./quizitem">
+                                        <Link
+                                            href={{
+                                                pathname: `./${item.name}`,
+                                                query: {
+                                                    item: JSON.stringify(item),
+                                                },
+                                            }}
+                                        >
                                             <CardContent
                                                 className={classes.carditem}
                                             >
@@ -86,7 +95,7 @@ const quiz = () => {
                                                     variant="h6"
                                                     component="h1"
                                                 >
-                                                    {item.title}
+                                                    {item.name}
                                                 </Typography>
                                             </CardContent>
                                         </Link>
@@ -116,3 +125,19 @@ const quiz = () => {
 }
 
 export default quiz
+
+export async function getStaticProps() {
+    const db = firebase.firestore()
+    //const [data, setData] = useState({})
+    let data = []
+    await db
+        .collection("sections")
+        .get()
+        .then((item) => {
+            item.forEach((doc) => data.push(doc.data()))
+        })
+
+    return {
+        props: { data: data },
+    }
+}

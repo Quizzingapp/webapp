@@ -1,19 +1,19 @@
 import React, { useEffect, useState, useRef } from "react"
 import quizData from "./quiz_data.json"
-import Modal from '@material-ui/core/Modal';
+import Modal from "@material-ui/core/Modal"
 import { formatTime } from "../utils/index"
 import firebase from "../../firebase/clientApp"
 import Link from "next/link"
 import MyAppBar from "../../components/appbar"
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import { green, red } from '@material-ui/core/colors';
-import CheckIcon from '@material-ui/icons/Check';
-import ClearIcon from '@material-ui/icons/Clear';
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+import List from "@material-ui/core/List"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemText from "@material-ui/core/ListItemText"
+import ListItemAvatar from "@material-ui/core/ListItemAvatar"
+import Avatar from "@material-ui/core/Avatar"
+import { green, red } from "@material-ui/core/colors"
+import CheckIcon from "@material-ui/icons/Check"
+import ClearIcon from "@material-ui/icons/Clear"
+import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt"
 import {
     makeStyles,
     Container,
@@ -34,18 +34,18 @@ import {
 let totalTime = 30
 
 function rand() {
-    return Math.round(Math.random() * 20) - 10;
+    return Math.round(Math.random() * 20) - 10
 }
 
 function getModalStyle() {
-    const top = 50 + rand();
-    const left = 50 + rand();
+    const top = 50 + rand()
+    const left = 50 + rand()
 
     return {
         top: `${top}%`,
         left: `${left}%`,
         transform: `translate(-${top}%, -${left}%)`,
-    };
+    }
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -68,38 +68,37 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "5em",
     },
     paper: {
-        position: 'absolute',
+        position: "absolute",
         width: 400,
         backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
+        border: "2px solid #000",
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
         zIndex: 10,
-      },
+    },
     progress: {
         maxWidth: "90%",
         margin: theme.spacing(3),
     },
 }))
 
-const quiz = () => {
+const quiz = ({ questions }) => {
     const classes = useStyles()
     const [seconds, setSeconds] = useState(30)
     const [changeTime, setChangeTime] = useState(true)
-    const [modalStyle] = React.useState(getModalStyle);
-    const [questions, setQuestions] = useState([])
+    const [modalStyle] = React.useState(getModalStyle)
+    //const [questions, setQuestions] = useState([])
 
-    useEffect(() => {
-        const db = firebase.firestore()
-        db.collection("questions")
-            .where("tags", "array-contains", "hindu")
-            .get()
-            .then((dataSnapshot) =>
-                dataSnapshot.docs.forEach((doc) =>
-                    setQuestions((prevState) => [...prevState, doc.data()])
-                )
-            )
-    }, [])
+    // useEffect(() => {
+    //     const db = firebase.firestore()
+    //     db.collection("questions")
+    //         .get()
+    //         .then((dataSnapshot) =>
+    //             dataSnapshot.docs.forEach((doc) =>
+    //                 setQuestions((prevState) => [...prevState, doc.data()])
+    //             )
+    //         )
+    // }, [])
 
     useEffect(() => {
         if (seconds > 0 && changeTime) {
@@ -111,51 +110,61 @@ const quiz = () => {
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [showScore, setShowScore] = useState(false)
     const [score, setScore] = useState(0)
-    const [selected, setSelected] = useState('')
-    const [ansSelected, setAnsSelected] = useState('')
-    const [error, setError] = useState('')
-    const [answers, setAnswers] = useState([]);
-    const [options, setOptions] = useState([]);
-    const [correctAnswer, setCorrectAnswer] = useState('');
+    const [selected, setSelected] = useState("")
+    const [ansSelected, setAnsSelected] = useState("")
+    const [error, setError] = useState("")
+    const [answers, setAnswers] = useState([])
+    const [options, setOptions] = useState([])
+    const [correctAnswer, setCorrectAnswer] = useState("")
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(false)
     const handleOpen = () => {
-        setOpen(true);
-    };
+        setOpen(true)
+    }
 
     const handleClose = () => {
-        setOpen(false);
-    };
+        setOpen(false)
+    }
 
     const handleAnswerOptionClick = (isCorrect) => {
-        if(isCorrect){
-            setScore(score + 1);
+        if (isCorrect) {
+            setScore(score + 1)
         }
-        setSelected(isCorrect);
-        setOptions([quizData.data[currentQuestion].answerOptions])
-        setCorrectAnswer(quizData.data[currentQuestion].answer)
-        if(error){
-            setError('');
+        setSelected(isCorrect)
+        setOptions([questions[currentQuestion].answerOptions])
+        setCorrectAnswer(questions[currentQuestion].answer)
+        if (error) {
+            setError("")
         }
     }
 
     const handleAnswerOption = (e) => {
-        setAnsSelected(e.target.value);
+        setAnsSelected(e.target.value)
         // console.log(e.target.value);
-        if(error){
-            setError('');
+        if (error) {
+            setError("")
         }
     }
 
     const handleNextClick = (e) => {
-        if(selected===''){
-            return setError('Please select an option');
-        }      
+        if (selected === "") {
+            return setError("Please select an option")
+        }
+
         // console.log("currentQuestion: "+ currentQuestion);
         // console.log(selected);
         // console.log(options);
         // console.log(ansSelected);
-        setAnswers(prevState => [...prevState, { q: quizData.data[currentQuestion].question, o: options, t: selected, s: ansSelected, a: correctAnswer }])
+        setAnswers((prevState) => [
+            ...prevState,
+            {
+                q: questions[currentQuestion].question,
+                o: options,
+                t: selected,
+                s: ansSelected,
+                a: correctAnswer,
+            },
+        ])
         const nextQuestion = currentQuestion + 1
         if (nextQuestion < questions.length) {
             setCurrentQuestion(nextQuestion)
@@ -163,8 +172,8 @@ const quiz = () => {
         } else {
             setChangeTime(false)
             setShowScore(true)
-        }  
-        setSelected('');
+        }
+        setSelected("")
         setValue(null)
     }
 
@@ -175,15 +184,14 @@ const quiz = () => {
     }
 
     const [questionNumber, setQuestionNumber] = useState(0)
-    var num = [];
-    for (var i = 0; i < quizData.data.length; i++) {
-        num.push(i);
+    var num = []
+    for (var i = 0; i < questions.length; i++) {
+        num.push(i)
     }
     const handleQuestionSelect = (n) => {
         // console.log("Clicked")
         setQuestionNumber(n)
     }
-
     const body = (
         <Paper className={classes.paper}>
             <Typography variant="body1" component="h1">
@@ -191,68 +199,116 @@ const quiz = () => {
             </Typography>
 
             <Paper>
-            <Grid item lg={9} sm={6} xs={12}>
-                <Typography variant="h4" component="h1">
-                    Quiz
-                </Typography>
-
-                <Typography variant="h6" component="h1">
-                    Response
-                </Typography>
-
-                <ButtonGroup>
-                    {num.map((number) => (
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            className={classes.button}
-                            onClick={() => handleQuestionSelect(number)}
-                        >
-                            {number+1}
-                        </Button>
-                    ))}
-                </ButtonGroup>
-
-                <Typography variant="body1" component="h1">
-                    Question {questionNumber + 1}/
-                    {quizData.data.length}
-                </Typography>     
-
-                <Paper className={classes.questionBox}>
-                    <Typography variant="h6" component="h1">
-                        {/* {console.log("xyz", answers, questionNumber, answers[questionNumber], answers[questionNumber].hasOwnProperty('q')) && (answers[questionNumber].q)} */}
-                        {console.log(answers)}
-                        {/* { !!answers[parseInt(questionNumber)] && (answers[parseInt(questionNumber)].q)} */}
-                        {quizData.data[questionNumber].question}
+                <Grid item lg={9} sm={6} xs={12}>
+                    <Typography variant="h4" component="h1">
+                        Quiz
                     </Typography>
-                </Paper>
 
-                <Paper className={classes.questionBox}>
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">
-                            Answers
-                        </FormLabel>
-                        {/* { !!answers[parseInt(questionNumber)] && (answers[parseInt(questionNumber)].o[0].map((option) => ( */}
-                        {(quizData.data[questionNumber].answerOptions.map((option) => (
-                            <ListItem>
-                                <ListItemAvatar>
-                                <Avatar>
-                                    {!!answers[parseInt(questionNumber)] == true ? option.answerText==answers[parseInt(questionNumber)].s ? answers[parseInt(questionNumber)].t==true ? <CheckIcon style={{ color: green[500] }} /> : <ClearIcon style={{ color: red[500] }} /> : option.isCorrect ==true ? <CheckIcon style={{ color: green[500] }} /> : <ArrowRightAltIcon /> : <ArrowRightAltIcon />}
-                                </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText 
-                                    primary = {option.answerText}
-                                    secondary = {!!answers[parseInt(questionNumber)] == true ? option.answerText==answers[parseInt(questionNumber)].s ? "Your answer" : "" : "" }
-                                />
-                            </ListItem>
-                        )))}
-                    </FormControl>
-                </Paper>
+                    <Typography variant="h6" component="h1">
+                        Response
+                    </Typography>
+
+                    <ButtonGroup>
+                        {num.map((number) => (
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                className={classes.button}
+                                onClick={() => handleQuestionSelect(number)}
+                            >
+                                {number + 1}
+                            </Button>
+                        ))}
+                    </ButtonGroup>
+
+                    <Typography variant="body1" component="h1">
+                        Question {questionNumber + 1}/{questions.length}
+                    </Typography>
+
+                    <Paper className={classes.questionBox}>
+                        <Typography variant="h6" component="h1">
+                            {/* {console.log("xyz", answers, questionNumber, answers[questionNumber], answers[questionNumber].hasOwnProperty('q')) && (answers[questionNumber].q)} */}
+
+                            {/* { !!answers[parseInt(questionNumber)] && (answers[parseInt(questionNumber)].q)} */}
+                            {questions[questionNumber].question}
+                        </Typography>
+                    </Paper>
+
+                    <Paper className={classes.questionBox}>
+                        <FormControl component="fieldset">
+                            <FormLabel component="legend">Answers</FormLabel>
+                            {/* { !!answers[parseInt(questionNumber)] && (answers[parseInt(questionNumber)].o[0].map((option) => ( */}
+                            {questions[questionNumber].answerOptions.map(
+                                (option) => (
+                                    <ListItem>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                {!!answers[
+                                                    parseInt(questionNumber)
+                                                ] == true ? (
+                                                    option.answerText ==
+                                                    answers[
+                                                        parseInt(questionNumber)
+                                                    ].s ? (
+                                                        answers[
+                                                            parseInt(
+                                                                questionNumber
+                                                            )
+                                                        ].t == true ? (
+                                                            <CheckIcon
+                                                                style={{
+                                                                    color: green[500],
+                                                                }}
+                                                            />
+                                                        ) : (
+                                                            <ClearIcon
+                                                                style={{
+                                                                    color: red[500],
+                                                                }}
+                                                            />
+                                                        )
+                                                    ) : option.isCorrect ==
+                                                      true ? (
+                                                        <CheckIcon
+                                                            style={{
+                                                                color: green[500],
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        <ArrowRightAltIcon />
+                                                    )
+                                                ) : (
+                                                    <ArrowRightAltIcon />
+                                                )}
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={option.answerText}
+                                            secondary={
+                                                !!answers[
+                                                    parseInt(questionNumber)
+                                                ] == true
+                                                    ? option.answerText ==
+                                                      answers[
+                                                          parseInt(
+                                                              questionNumber
+                                                          )
+                                                      ].s
+                                                        ? "Your answer"
+                                                        : ""
+                                                    : ""
+                                            }
+                                        />
+                                    </ListItem>
+                                )
+                            )}
+                        </FormControl>
+                    </Paper>
                 </Grid>
             </Paper>
             {/* // <quiz /> */}
         </Paper>
-      );
+    )
 
     return (
         <>
@@ -288,13 +344,12 @@ const quiz = () => {
 
                                     <p>
                                         You answered {score} out of{" "}
-                                        {quizData.data.length} correctly
+                                        {questions.length} correctly
                                     </p>
                                     <p>
                                         <strong>
                                             {Math.floor(
-                                                (score / quizData.data.length) *
-                                                    100
+                                                (score / questions.length) * 100
                                             )}
                                         </strong>
                                         %
@@ -308,7 +363,7 @@ const quiz = () => {
                                 <>
                                     <Typography variant="body1" component="h1">
                                         Question {currentQuestion + 1}/
-                                        {quizData.data.length}
+                                        {questions.length}
                                     </Typography>
                                     <Paper className={classes.questionBox}>
                                         <Typography variant="h6" component="h1">
@@ -326,7 +381,7 @@ const quiz = () => {
                                                 value={value}
                                                 onChange={handleChangeOption}
                                             >
-                                                {quizData.data[
+                                                {questions[
                                                     currentQuestion
                                                 ].answerOptions.map(
                                                     (answerOption) => (
@@ -339,7 +394,20 @@ const quiz = () => {
                                                             }
                                                             // control={<Radio onChange={() => handleAnswerOptionClick(e, answerOption.isCorrect)}/>}
                                                             // control={<Radio onChange={handleAnswerOptionClick}/>}
-                                                            control={<Radio onChange={(e) => { handleAnswerOptionClick(answerOption.isCorrect); handleAnswerOption(e)}}/>}
+                                                            control={
+                                                                <Radio
+                                                                    onChange={(
+                                                                        e
+                                                                    ) => {
+                                                                        handleAnswerOptionClick(
+                                                                            answerOption.isCorrect
+                                                                        )
+                                                                        handleAnswerOption(
+                                                                            e
+                                                                        )
+                                                                    }}
+                                                                />
+                                                            }
                                                         />
                                                     )
                                                 )}
@@ -349,7 +417,7 @@ const quiz = () => {
                                 </>
                             )}
                         </Container>
-                        {error && 
+                        {error && (
                             <div>
                                 <p>{error}</p>
                                 <style jsx>{`
@@ -358,7 +426,7 @@ const quiz = () => {
                                     }
                                 `}</style>
                             </div>
-                        }
+                        )}
 
                         {!showScore && (
                             <Container>
@@ -396,7 +464,7 @@ const quiz = () => {
                                         color="secondary"
                                         variant="contained"
                                         className={classes.button}
-                                        onClick = {handleOpen}
+                                        onClick={handleOpen}
                                     >
                                         Open modal
                                     </Button>
@@ -404,7 +472,7 @@ const quiz = () => {
                                         open={open}
                                         onClose={handleClose}
                                         style={modalStyle}
-                                        style={{ overflow: 'scroll' }}
+                                        style={{ overflow: "scroll" }}
                                         aria-labelledby="simple-modal-title"
                                         aria-describedby="simple-modal-description"
                                     >
@@ -432,4 +500,18 @@ const quiz = () => {
     )
 }
 
-export default quiz;
+export default quiz
+
+export async function getStaticProps() {
+    const db = firebase.firestore()
+    let questions = []
+    await db
+        .collection("questions")
+        .get()
+        .then((dataSnapshot) =>
+            dataSnapshot.docs.forEach((doc) => questions.push(doc.data()))
+        )
+    return {
+        props: { questions: questions },
+    }
+}
