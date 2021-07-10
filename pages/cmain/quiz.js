@@ -13,6 +13,8 @@ import Card from "@material-ui/core/Card"
 import { CardContent } from "@material-ui/core"
 import Link from "next/link"
 import firebase from "../../firebase/clientApp"
+import { useRouter } from "next/router"
+import { action, useStoreActions, useStoreState } from "easy-peasy"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -44,6 +46,20 @@ const useStyles = makeStyles((theme) => ({
 
 const quiz = ({ data }) => {
     const classes = useStyles()
+    const router = useRouter()
+    const addName = useStoreActions((action) => action.section.addName)
+    const addDescription = useStoreActions(
+        (action) => action.section.addDescription
+    )
+    const addTopic = useStoreActions((action) => action.section.addTopic)
+
+    const handleCardClick = (item) => {
+        addName(item.name)
+        addDescription(item.description)
+        addTopic(item.topics)
+        router.push(`./${item.name}`)
+    }
+
     // const gridItem = [
     //     { title: "True or False" },
     //     { title: "One Minute" },
@@ -79,26 +95,17 @@ const quiz = ({ data }) => {
                         <Grid container spacing={3} style={{ marginTop: 24 }}>
                             {data.map((item) => (
                                 <Grid item lg={4} sm={6} xs={12}>
-                                    <Card>
-                                        <Link
-                                            href={{
-                                                pathname: `./${item.name}`,
-                                                query: {
-                                                    item: JSON.stringify(item),
-                                                },
-                                            }}
+                                    <Card onClick={() => handleCardClick(item)}>
+                                        <CardContent
+                                            className={classes.carditem}
                                         >
-                                            <CardContent
-                                                className={classes.carditem}
+                                            <Typography
+                                                variant="h6"
+                                                component="h1"
                                             >
-                                                <Typography
-                                                    variant="h6"
-                                                    component="h1"
-                                                >
-                                                    {item.name}
-                                                </Typography>
-                                            </CardContent>
-                                        </Link>
+                                                {item.name}
+                                            </Typography>
+                                        </CardContent>
                                     </Card>
                                 </Grid>
                             ))}

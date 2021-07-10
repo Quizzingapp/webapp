@@ -2,60 +2,62 @@
     "data": [
         {
             "question": "Upnishads are books on :",
-            "answerOptions": [
-                { "answerText": "Politics", "isCorrect": false },
-                { "answerText": "Philosophy", "isCorrect": true },
-                { "answerText": "Medicine", "isCorrect": false },
-                { "answerText": "Social Life", "isCorrect": false }
-            ],
-			"answer": "Philosophy"
+            "answerOptions": {
+                "a": "Politics",
+                "b": "Philosophy",
+                "c": "Medicine",
+                "d": "Social Life"
+            },
+            "answer": "b",
+            "createdBy": "creator",
+            "tags": ["india", "history"]
         },
         {
-			"question": "Who was the first Indian ruler who had territory outside India?",
-			"answerOptions": [
-				{ "answerText": "Huvishka", "isCorrect": false },
-				{ "answerText": "Kanishka", "isCorrect": true },
-				{ "answerText": "Chandragupta Maurya", "isCorrect": false },
-				{ "answerText": "Ashoka", "isCorrect": false }
-			],
-			"answer": "Kanishka",
-			"createdBy": "creator",
+            "question": "Who was the first Indian ruler who had territory outside India?",
+            "answerOptions": {
+                "a": "Huvishka",
+                "b": "Kanishka",
+                "c": "Chandragupta Maurya",
+                "d": "Ashoka"
+            },
+            "answer": "b",
+            "createdBy": "creator",
             "tags": ["india", "history"]
-		},
-		{
-			"question": "Harihara Raya I who ruled the Vijaynagara Empire for the period 1336-1356 belonged to which dynasty?",
-			"answerOptions": [
-				{ "answerText": "Sangama Dynasty", "isCorrect": true },
-				{ "answerText": "Saluva Dynasty", "isCorrect": false },
-				{ "answerText": "Tuluva Dynasty", "isCorrect": false },
-				{ "answerText": "Aravidu Dynasty", "isCorrect": false }
-			],
-			"answer": "Sangama Dynasty",
-			"createdBy": "creator",
-            "tags": ["india", "history", "hindu"]
-		},
-		{
-			"question": "Who among the following was worshipped during Early Vedic Civilization?",
-			"answerOptions": [
-				{ "answerText": "Varuna", "isCorrect": false },
-				{ "answerText": "Indra", "isCorrect": false },
-				{ "answerText": "Surya", "isCorrect": false },
-				{ "answerText": "All the above", "isCorrect": true }
-			],
-			"answer": "All the above",
-			"createdBy": "creator",
-            "tags": ["india", "history"]
-		},
+        },
         {
-			"question": "Which one of the following was the capital of Kosala?",
-			"answerOptions": [
-				{ "answerText": "Shuktimati", "isCorrect": false },
-				{ "answerText": "Indraprastha", "isCorrect": false },
-				{ "answerText": "Kaushambi", "isCorrect": false },
-				{ "answerText": "Sravasti", "isCorrect": true }
-			],
-			"answer": "Sravasti",
-			"createdBy": "creator",
+            "question": "Harihara Raya I who ruled the Vijaynagara Empire for the period 1336-1356 belonged to which dynasty?",
+            "answerOptions": {
+                "a": "Sangama Dynasty",
+                "b": "Saluva Dynasty",
+                "c": "Tuluva Dynasty",
+                "d": "Aravidu Dynasty"
+            },
+            "answer": "a",
+            "createdBy": "creator",
+            "tags": ["india", "history", "hindu"]
+        },
+        {
+            "question": "Who among the following was worshipped during Early Vedic Civilization?",
+            "answerOptions": {
+                "a": "Varuna",
+                "b": "Indra",
+                "c": "Surya",
+                "d": "All the above"
+            },
+            "answer": "d",
+            "createdBy": "creator",
+            "tags": ["india", "history"]
+        },
+        {
+            "question": "Which one of the following was the capital of Kosala?",
+            "answerOptions": {
+                "a": "Shuktimati",
+                "b": "Indraprastha",
+                "c": "Kaushambi",
+                "d": "Sravasti"
+            },
+            "answer": "d",
+            "createdBy": "creator",
             "tags": ["india", "history", "hindu"]
         }
     ]

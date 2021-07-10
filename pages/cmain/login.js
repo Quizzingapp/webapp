@@ -15,6 +15,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
 import firebase from "../../firebase/clientApp"
 import { useUser } from "../../context/userContext"
+import { useRouter } from "next/router"
 
 function Copyright() {
     return (
@@ -58,12 +59,16 @@ export default function Login() {
         e.preventDefault()
         setForm({ ...form, [e.target.name]: e.target.value })
     }
+    const router = useRouter()
     const submitForm = (e) => {
         e.preventDefault()
         firebase
             .auth()
             .signInWithEmailAndPassword(form.email, form.password)
-            .then((user) => setUser(user.user))
+            .then((user) => {
+                setUser(user.user)
+                if (user) router.push("./quiz")
+            })
             .catch((error) => {
                 var errorCode = error.code
                 var errorMessage = error.message

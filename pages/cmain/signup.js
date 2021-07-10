@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
 import firebase from "../../firebase/clientApp"
+import { useRouter } from "next/router"
 
 function Copyright() {
     return (
@@ -57,6 +58,7 @@ export default function SignUp() {
         confirmPassword: "",
     }
     const [form, setForm] = useState(initialState)
+    const router = useRouter()
 
     const updateField = (e) => {
         e.preventDefault()
@@ -76,7 +78,8 @@ export default function SignUp() {
             .createUserWithEmailAndPassword(form.email, form.password)
             .then(
                 firebase.firestore().collection("users").add(form),
-                setForm(initialState)
+                setForm(initialState),
+                router.push("./quiz")
             )
             .catch((error) => {
                 var errorCode = error.code

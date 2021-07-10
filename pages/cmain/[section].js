@@ -12,6 +12,7 @@ import React from "react"
 import MyAppBar from "../../components/appbar"
 import { list } from "../../components/displayitem"
 import { useRouter } from "next/router"
+import { useStoreState } from "easy-peasy"
 
 const useStyles = makeStyles((theme) => ({
     board: {
@@ -43,9 +44,13 @@ const useStyles = makeStyles((theme) => ({
 
 function quizitem() {
     const router = useRouter()
-    const { item } = router.query
+    //const { item } = router.query
 
-    const data = JSON.parse(item)
+    //const data = JSON.parse(item)
+
+    const name = useStoreState((state) => state.section.name)
+    const description = useStoreState((state) => state.section.description)
+    const topics = useStoreState((state) => state.section.topics)
 
     const classes = useStyles()
     return (
@@ -59,23 +64,18 @@ function quizitem() {
                 <Grid container spacing={5}>
                     <Grid item xs={12} lg={9}>
                         <Typography variant="h3" component="h1">
-                            {data.name}
+                            {name}
                         </Typography>
                         <Paper className={classes.des}>
-                            <Typography>
-                                {/* In this section you have to choose either true
-                                or false. Each question will comprise of 10
-                                points. */}
-                                {data.description}
-                            </Typography>
+                            <Typography>{description}</Typography>
                         </Paper>
                         <Grid container spacing={4} style={{ marginTop: 24 }}>
-                            {list.map((item) => (
-                                <Grid key={item.title} item lg={12} sm={12}>
+                            {topics.map((item) => (
+                                <Grid key={item} item lg={12} sm={12}>
                                     <Typography variant="h6" component="h1">
-                                        {item.title}
+                                        {item}
                                     </Typography>
-                                    <GridList
+                                    {/* <GridList
                                         className={classes.gridList}
                                         cols={6}
                                         cellHeight="auto"
@@ -95,7 +95,7 @@ function quizitem() {
                                                 </Paper>
                                             </GridListTile>
                                         ))}
-                                    </GridList>
+                                    </GridList> */}
                                 </Grid>
                             ))}
                         </Grid>

@@ -5,8 +5,8 @@ import { ThemeProvider } from "@material-ui/core/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import theme from "./theme"
 import UserContext from "../context/userContext"
-// import quizData from "../pages/screens/quiz_data.json"
-// import quiz from './screens/quiz'
+import { store } from "./utils/store"
+import { StoreProvider } from "easy-peasy"
 
 export default function MyApp(props) {
     const { Component, pageProps } = props
@@ -32,7 +32,9 @@ export default function MyApp(props) {
                 {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                 <CssBaseline />
                 <UserContext>
-                    <Component {...pageProps} />
+                    <StoreProvider store={store}>
+                        <Component {...pageProps} />
+                    </StoreProvider>
                 </UserContext>
             </ThemeProvider>
         </React.Fragment>
