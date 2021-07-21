@@ -7,6 +7,9 @@ import theme from "./theme"
 import UserContext from "../context/userContext"
 import { store } from "./utils/store"
 import { StoreProvider } from "easy-peasy"
+import Layout from '../components/Layout'
+// import quizData from "../pages/screens/quiz_data.json"
+// import quiz from './screens/quiz'
 
 export default function MyApp(props) {
     const { Component, pageProps } = props
