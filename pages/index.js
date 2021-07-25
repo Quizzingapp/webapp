@@ -61,7 +61,6 @@ export default function Home() {
                     justify-content: center;
                     align-items: center;
                 }
-
                 main {
                     padding: 5rem 0;
                     flex: 1;
@@ -70,7 +69,6 @@ export default function Home() {
                     justify-content: center;
                     align-items: center;
                 }
-
                 footer {
                     width: 100%;
                     height: 100px;
@@ -79,54 +77,44 @@ export default function Home() {
                     justify-content: center;
                     align-items: center;
                 }
-
                 footer img {
                     margin-left: 0.5rem;
                 }
-
                 footer a {
                     display: flex;
                     justify-content: center;
                     align-items: center;
                 }
-
                 button {
                     font-size: 1.5em;
                     margin: 1em 0;
                 }
-
                 a {
                     color: blue;
                     font-size: 1.5em;
                 }
-
                 .title a {
                     color: #0070f3;
                     text-decoration: none;
                 }
-
                 .title a:hover,
                 .title a:focus,
                 .title a:active {
                     text-decoration: underline;
                 }
-
                 .title {
                     margin: 0;
                     line-height: 1.15;
                     font-size: 4rem;
                 }
-
                 .title,
                 .description {
                     text-align: center;
                 }
-
                 .description {
                     line-height: 1.5;
                     font-size: 1.5rem;
                 }
-
                 code {
                     background: #fafafa;
                     border-radius: 5px;
@@ -136,7 +124,6 @@ export default function Home() {
                         DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New,
                         monospace;
                 }
-
                 .grid {
                     display: flex;
                     align-items: center;
@@ -145,7 +132,6 @@ export default function Home() {
                     max-width: 800px;
                     margin-top: 3rem;
                 }
-
                 .card {
                     margin: 1rem;
                     flex-basis: 45%;
@@ -157,25 +143,21 @@ export default function Home() {
                     border-radius: 10px;
                     transition: color 0.15s ease, border-color 0.15s ease;
                 }
-
                 .card:hover,
                 .card:focus,
                 .card:active {
                     color: #0070f3;
                     border-color: #0070f3;
                 }
-
                 .card h3 {
                     margin: 0 0 1rem 0;
                     font-size: 1.5rem;
                 }
-
                 .card p {
                     margin: 0;
                     font-size: 1.25rem;
                     line-height: 1.5;
                 }
-
                 @media (max-width: 600px) {
                     .grid {
                         width: 100%;
@@ -193,7 +175,6 @@ export default function Home() {
                         Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
                         Helvetica Neue, sans-serif;
                 }
-
                 * {
                     box-sizing: border-box;
                 }
