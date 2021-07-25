@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button"
 import Link from "next/link"
 import { useUser } from "../context/userContext"
 import firebase from "../firebase/clientApp"
+import { useRouter } from "next/router"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,9 +26,11 @@ const useStyles = makeStyles((theme) => ({
 export default function ButtonAppBar() {
     const classes = useStyles()
     const { user } = useUser()
+    const router = useRouter()
 
     const handleClick = () => {
         firebase.auth().signOut()
+        router.push("cmain/login")
     }
 
     return (
