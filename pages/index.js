@@ -66,7 +66,6 @@ export default function Home() {
                         Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
                         Helvetica Neue, sans-serif;
                 }
-
                 * {
                     box-sizing: border-box;
                 }
