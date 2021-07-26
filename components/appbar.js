@@ -1,7 +1,8 @@
-import React from "react"
+import React, { useState } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
+import Modal from "@material-ui/core/Modal"
 import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
 import Link from "next/link"
@@ -29,6 +30,14 @@ import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
 import HelpRoundedIcon from '@material-ui/icons/HelpRounded';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import TextField from "@material-ui/core/TextField"
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import FormControlLabel from "@material-ui/core/FormControlLabel"
+import Checkbox from "@material-ui/core/Checkbox"
 import { NavLink, useHistory, useLocation } from "react-router-dom"
 
 const useStyles = makeStyles((theme) => ({
@@ -67,22 +76,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-// const ButtonAppBar = () => (
-//     <Link href="/cmain/quiz">
-//         <ListItem button
-//             className={`ButtonAppBar ${
-                
-//             }`}
-//         >
-//             <ListItemIcon>
-//                 <HomeRoundedIcon />
-//             </ListItemIcon>
-
-//             <ListItemText primary="Home" />
-//         </ListItem>
-//     </Link>
-// )
-
 export default function ButtonAppBar() {
     const classes = useStyles()
     const { user } = useUser()
@@ -90,19 +83,7 @@ export default function ButtonAppBar() {
     const [activityOpen, setActivityOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [anchorE2, setAnchorE2] = React.useState(null);
-    // const location = useLocation();
-    const history = useHistory();
-
-    const homeloc = '/cmain/quiz';
-
-    const navItems = [
-        {
-            text: 'Home',
-            icon:  <HomeRoundedIcon />,
-            path: '/cmain/quiz'
-        },
-    ]
-
+    
     const handleOpen = (event) => {
         setAnchorEl(event.currentTarget);
         setOpen(!open);
@@ -130,6 +111,75 @@ export default function ButtonAppBar() {
     const handleClick = () => {
         firebase.auth().signOut()
     }
+
+    const [issue, setIssue] = React.useState(false);
+    const openWriteIssue = () => {
+        setIssue(true);
+    }
+    const closeWriteIssue = () => {
+        setIssue(false);
+    }
+    const initialState = { name: "", email: "", message: "" }
+    const [form, setForm] = useState(initialState)
+    const updateField = (e) => {
+        e.preventDefault()
+        setForm({ ...form, [e.target.name]: e.target.value })
+    }
+    const submitForm = (e) => {
+        alert("Submit");
+        e.preventDefault();
+        firebase.collection("issueMessages").add(form),
+        setForm(initialState)
+        .then(() => {
+            alert("Message submitted successfully!");
+        })
+        .catch((error) => {
+            alert(error.message);
+        });
+    }
+
+    const raiseIssueBody = (
+        <form className={classes.form} noValidate onSubmit={submitForm}>
+            <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="name"
+                label="Full Name"
+                name="name"
+                autoComplete="name"
+                autoFocus
+                value={form.name}
+                onChange={updateField}
+            />
+            <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                value={form.email}
+                onChange={updateField}
+            />
+            <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="issue"
+                label="Type issue here"
+                id="issue"
+                autoComplete="issue"
+                value={form.issue}
+                onChange={updateField}
+            />
+        </form>
+    )
 
     return (
         <div className={classes.root}>
@@ -261,16 +311,37 @@ export default function ButtonAppBar() {
                                     </MenuItem>
                                 </Link>
 
-                                <Link href="/cmain/quiz">
+                                {/* <Link href="/cmain/quiz"> */}
+                                <div>
                                     <MenuItem 
-                                        onClick={handleClose2}
+                                        onClick={openWriteIssue}
                                     >
                                         <ListItemIcon>
                                             <BugReportRoundedIcon />
                                         </ListItemIcon>
                                         <ListItemText primary="Raise an Issue" />
+                                        
                                     </MenuItem>
-                                </Link>
+
+                                    <Dialog open={issue} onClose={closeWriteIssue} aria-labelledby="form-dialog-title">
+                                        <DialogTitle id="form-dialog-title">Raise an Issue</DialogTitle>
+                                        <DialogContent>
+                                            <DialogContentText>
+                                                Please specify the issue in the below form and click submit.
+                                                {raiseIssueBody}
+                                            </DialogContentText>
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={closeWriteIssue} color="primary">
+                                                Cancel
+                                            </Button>
+                                            <Button type="submit" onClick={closeWriteIssue} color="primary">
+                                                Submit
+                                            </Button>
+                                        </DialogActions>
+                                    </Dialog>
+                                {/* </Link> */}
+                                </div>
                             </Menu>
 
                             <ListItem button onClick={handleOpen}>
@@ -299,7 +370,7 @@ export default function ButtonAppBar() {
                                     </MenuItem>
                                 </Link>
 
-                                <Link href="/cmain/quiz">
+                                <Link href="/cprofile/leaderBoard">
                                     <MenuItem 
                                         onClick={handleClose}
                                     >
