@@ -33,7 +33,7 @@ import {
 } from "@material-ui/core"
 import { useStoreActions, useStoreState } from "easy-peasy"
 
-let totalTime = 30
+let totalTime = 5
 
 function rand() {
     return Math.round(Math.random() * 20) - 10
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
 
 const quiz = ({ questions }) => {
     const classes = useStyles()
-    const [seconds, setSeconds] = useState(30)
+    const [seconds, setSeconds] = useState(totalTime)
     const [changeTime, setChangeTime] = useState(true)
     const router = useRouter()
     //const [modalStyle] = React.useState(getModalStyle)
@@ -96,6 +96,14 @@ const quiz = ({ questions }) => {
             setTimeout(() => setSeconds(seconds - 1), 1000)
         } else {
             handleNextClick()
+            if (result.length < questions.length) {
+                for (let i = result.length; i < questions.length; i++) {
+                    addData({
+                        userSelected: null,
+                        ...questions[i],
+                    })
+                }
+            }
             router.push("./result")
             setShowScore(true)
         }
@@ -105,11 +113,11 @@ const quiz = ({ questions }) => {
     const [error, setError] = useState("")
     const [score, setScore] = useState(0)
 
-    const [selected, setSelected] = useState("")
-    const [ansSelected, setAnsSelected] = useState("")
-    const [answers, setAnswers] = useState([])
-    const [options, setOptions] = useState([])
-    const [correctAnswer, setCorrectAnswer] = useState("")
+    // const [selected, setSelected] = useState("")
+    // const [ansSelected, setAnsSelected] = useState("")
+    // const [answers, setAnswers] = useState([])
+    // const [options, setOptions] = useState([])
+    // const [correctAnswer, setCorrectAnswer] = useState("")
 
     const result = useStoreState((state) => state.result.data)
     const addData = useStoreActions((actions) => actions.result.addData)
@@ -147,8 +155,7 @@ const quiz = ({ questions }) => {
         })
 
         const nextQuestion = currentQuestion + 1
-        if (nextQuestion < quizData.data.length) {
-        // if (nextQuestion < questions.length) {
+        if (nextQuestion < questions.length) {
             setCurrentQuestion(nextQuestion)
         } else {
             setChangeTime(false)
@@ -172,76 +179,6 @@ const quiz = ({ questions }) => {
         setQuestionNumber(n)
     }
 
-    const body = (
-        <Paper className={classes.paper}>
-            <Typography variant="body1" component="h1">
-                Your answers
-            </Typography>
-
-            <Paper>
-            <Grid item lg={9} sm={6} xs={12}>
-                <Typography variant="h4" component="h1">
-                    Quiz
-                </Typography>
-
-                <Typography variant="h6" component="h1">
-                    Response
-                </Typography>
-
-                <ButtonGroup>
-                    {num.map((number) => (
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            className={classes.button}
-                            onClick={() => handleQuestionSelect(number)}
-                        >
-                            {number+1}
-                        </Button>
-                    ))}
-                </ButtonGroup>
-
-                <Typography variant="body1" component="h1">
-                    Question {questionNumber + 1}/
-                    {quizData.data.length}
-                </Typography>     
-
-                <Paper className={classes.questionBox}>
-                    <Typography variant="h6" component="h1">
-                        {/* {console.log("xyz", answers, questionNumber, answers[questionNumber], answers[questionNumber].hasOwnProperty('q')) && (answers[questionNumber].q)} */}
-                        {/* {console.log(answers)} */}
-                        {/* { !!answers[parseInt(questionNumber)] && (answers[parseInt(questionNumber)].q)} */}
-                        {quizData.data[questionNumber].question}
-                    </Typography>
-                </Paper>
-
-                <Paper className={classes.questionBox}>
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">
-                            Answers
-                        </FormLabel>
-                        {/* { !!answers[parseInt(questionNumber)] && (answers[parseInt(questionNumber)].o[0].map((option) => ( */}
-                        {(quizData.data[questionNumber].answerOptions.map((option) => (
-                            <ListItem>
-                                <ListItemAvatar>
-                                <Avatar>
-                                    {!!answers[parseInt(questionNumber)] == true ? option.answerText==answers[parseInt(questionNumber)].s ? answers[parseInt(questionNumber)].t==true ? <CheckIcon style={{ color: green[500] }} /> : <ClearIcon style={{ color: red[500] }} /> : option.isCorrect ==true ? <CheckIcon style={{ color: green[500] }} /> : <ArrowRightAltIcon /> : option.answerText==quizData.data[questionNumber].answer ? <CheckIcon style={{ color: green[500] }} /> : <ArrowRightAltIcon />}
-                                </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText 
-                                    primary = {option.answerText}
-                                    secondary = {!!answers[parseInt(questionNumber)] == true ? option.answerText==answers[parseInt(questionNumber)].s ? "Your answer" : "" : "" }
-                                />
-                            </ListItem>
-                        )))}
-                    </FormControl>
-                </Paper>
-                </Grid>
-            </Paper>
-            {/* // <quiz /> */}
-        </Paper>
-      );
-
     return (
         <>
             <MyAppBar />
@@ -256,7 +193,7 @@ const quiz = ({ questions }) => {
                                 {" "}
                                 <LinearProgress
                                     variant="determinate"
-                                    value={(seconds * 10) / 3}
+                                    value={(seconds * 100) / totalTime}
                                 />{" "}
                             </Box>
                         )}
@@ -299,10 +236,9 @@ const quiz = ({ questions }) => {
                                     </Typography>
                                     <Paper className={classes.questionBox}>
                                         <Typography variant="h6" component="h1">
-                                            {/* {questions.length &&
+                                            {questions.length &&
                                                 questions[currentQuestion]
-                                                    .question} */}
-                                                {quizData.data[currentQuestion].question}
+                                                    .question}
                                         </Typography>
                                     </Paper>
                                     <Paper className={classes.questionBox}>
@@ -410,17 +346,22 @@ export async function getStaticProps() {
     const db = firebase.firestore()
     let questions = []
     await db
-        .collection("questions")
-        .orderBy("createdAt", "desc")
+        .collection("sections")
+        .doc("W6arzl9T6BtFRvKsjaKs")
+        .collection("quiz_questions")
+        .orderBy("created_at", "desc")
+        .limit(10)
         .get()
         .then((dataSnapshot) =>
-            dataSnapshot.docs.forEach((doc) =>
+            dataSnapshot.docs.forEach((doc) => {
+                //console.log(doc.data())
                 questions.push({
                     ...doc.data(),
                     id: doc.id,
-                    createdAt: doc.data().createdAt.toString(),
+                    created_at: doc.data().created_at.toString(),
                 })
-            )
+                return
+            })
         )
     return {
         props: { questions: questions },

@@ -13,12 +13,15 @@ const useStyles = makeStyles((theme) => ({
     },
     divMain: {
         backgroundColor: "#F5F3E7",
+        backgroundImage: `url(/asset2.png)`,
+        backgroundSize: "cover",
+        backgroundPosition: "right",
         display: "flex",
         padding: theme.spacing(5),
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        height: "50vh",
+        height: "100vh",
     },
 }))
 
@@ -41,10 +44,10 @@ export default function Home() {
                 <div className={classes.divMain}>
                     <Typography
                         className={classes.a}
-                        variant="h2"
+                        variant="h3"
                         component="h1"
                     >
-                        Quizzing App
+                        Quizz
                     </Typography>
                     <Button
                         variant="contained"

@@ -15,10 +15,10 @@ export default function UserContextComp({ children }) {
                 try {
                     if (user) {
                         // User is signed in.
-                        const { email } = user
+                        const { email, uid } = user
                         // You could also look for the user doc in your Firestore (if you have one):
                         // const userDoc = await firebase.firestore().doc(`users/${uid}`).get()
-                        setUser({ email })
+                        setUser({ email, uid })
                     } else setUser(null)
                 } catch (error) {
                     // Most probably a connection error. Handle appropriately.

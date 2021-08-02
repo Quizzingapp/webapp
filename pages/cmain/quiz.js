@@ -15,6 +15,7 @@ import Link from "next/link"
 import firebase from "../../firebase/clientApp"
 import { useRouter } from "next/router"
 import { action, useStoreActions, useStoreState } from "easy-peasy"
+import { useSoftRiseShadowStyles } from "@mui-treasury/styles/shadow/softRise"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,12 +40,17 @@ const useStyles = makeStyles((theme) => ({
     carditem: {
         height: 200,
         textAlign: "center",
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "#fdf0d5",
         paddingTop: 80,
+        "&:hover": {
+            backgroundColor: "#f9dcc4",
+            transform: "scale3d(1.2, 1.2, 2)",
+            boxShadow: "-12px 12px 64px 0 #bcc3d6",
+        },
     },
 }))
 
-const quiz = ({ data }) => {
+const quiz = () => {
     const classes = useStyles()
     const router = useRouter()
     const addName = useStoreActions((action) => action.section.addName)
@@ -54,20 +60,20 @@ const quiz = ({ data }) => {
     const addTopic = useStoreActions((action) => action.section.addTopic)
 
     const handleCardClick = (item) => {
-        addName(item.name)
-        addDescription(item.description)
-        addTopic(item.topics)
-        router.push(`./${item.name}`)
+        addName(item.title)
+        //addDescription(item.description)
+        //addTopic(item.topics)
+        router.push(`./${item.title}`)
     }
-
-    // const gridItem = [
-    //     { title: "True or False" },
-    //     { title: "One Minute" },
-    //     { title: "Quiz" },
-    //     { title: "Brain Teaser" },
-    //     { title: "Current Affairs" },
-    //     { title: "Match Words" },
-    // ]
+    const shadowStyles = useSoftRiseShadowStyles()
+    const gridItem = [
+        { title: "True or False" },
+        { title: "One Minute" },
+        { title: "Quiz" },
+        { title: "Brain Teaser" },
+        { title: "Current Affairs" },
+        { title: "Match Words" },
+    ]
 
     return (
         <>
@@ -93,9 +99,12 @@ const quiz = ({ data }) => {
                             </IconButton>
                         </Paper>
                         <Grid container spacing={3} style={{ marginTop: 24 }}>
-                            {data.map((item) => (
+                            {gridItem.map((item) => (
                                 <Grid item lg={4} sm={6} xs={12}>
-                                    <Card onClick={() => handleCardClick(item)}>
+                                    <Card
+                                        className={shadowStyles.root}
+                                        onClick={() => handleCardClick(item)}
+                                    >
                                         <CardContent
                                             className={classes.carditem}
                                         >
@@ -103,7 +112,7 @@ const quiz = ({ data }) => {
                                                 variant="h6"
                                                 component="h1"
                                             >
-                                                {item.name}
+                                                {item.title}
                                             </Typography>
                                         </CardContent>
                                     </Card>
@@ -121,7 +130,7 @@ const quiz = ({ data }) => {
                                     padding: 8,
                                 }}
                             >
-                                Leader Board
+                                Ads
                             </Typography>
                         </Paper>
                     </Grid>
@@ -133,18 +142,18 @@ const quiz = ({ data }) => {
 
 export default quiz
 
-export async function getStaticProps() {
-    const db = firebase.firestore()
-    //const [data, setData] = useState({})
-    let data = []
-    await db
-        .collection("sections")
-        .get()
-        .then((item) => {
-            item.forEach((doc) => data.push(doc.data()))
-        })
+// export async function getStaticProps() {
+//     const db = firebase.firestore()
+//     //const [data, setData] = useState({})
+//     let data = []
+//     await db
+//         .collection("sections")
+//         .get()
+//         .then((item) => {
+//             item.forEach((doc) => data.push(doc.data()))
+//         })
 
-    return {
-        props: { data: data },
-    }
-}
+//     return {
+//         props: { data: data },
+//     }
+// }

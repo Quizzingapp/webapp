@@ -75,12 +75,26 @@ export default function SignUp() {
         }
         firebase
             .auth()
-            .createUserWithEmailAndPassword(form.email, form.password)
-            .then(
-                firebase.firestore().collection("users").add(form),
-                setForm(initialState),
-                router.push("./quiz")
+            .createUserWithEmailAndPassword(
+                form.email.trim(),
+                form.password.trim()
             )
+            .then((userCredential) => {
+                var user = userCredential.user
+                let obj = {
+                    uid: user.uid,
+                    firstName: form.firstName,
+                    lastName: form.lastName,
+                    email: user.email,
+                    password: form.password,
+                    photoUrl: "",
+                    aboutMe: "",
+                    fullName: form.firstName + " " + form.lastName,
+                }
+                firebase.firestore().collection("users").doc(user.uid).set(obj),
+                    setForm(initialState),
+                    router.push("./quiz")
+            })
             .catch((error) => {
                 var errorCode = error.code
                 var errorMessage = error.message

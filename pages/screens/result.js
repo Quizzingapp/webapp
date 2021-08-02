@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core"
 import { useStoreState } from "easy-peasy"
 
-let n = quizData.data.length
+//let n = quizData.data.length
 
 const useStyles = makeStyles((theme) => ({
     questionBox: {
@@ -83,27 +83,30 @@ const result = () => {
                 <Grid container spacing={5}>
                     <Grid item lg={9} sm={6} xs={12}>
                         <Typography variant="h4" component="h1">
-                            Quiz
+                            Quiz Result
                         </Typography>
-                        <Typography variant="h3" component="h1">
+                        <Typography
+                            variant="h4"
+                            style={{ fontWeight: 600, marginTop: 20 }}
+                            component="h1"
+                        >
                             Score : {score}
                         </Typography>
                         <Typography variant="h6" component="h1">
                             Response
                         </Typography>
 
-                        <ButtonGroup variant="contained">
-                            {result.map((item, key) => {
-                                return (
-                                    <Button
-                                        onClick={() => setCurrentQuestion(key)}
-                                        color={c(key, currentQuestion)}
-                                    >
-                                        {key + 1}
-                                    </Button>
-                                )
-                            })}
-                        </ButtonGroup>
+                        {result.map((item, key) => {
+                            return (
+                                <Button
+                                    variant="contained"
+                                    onClick={() => setCurrentQuestion(key)}
+                                    color={c(key, currentQuestion)}
+                                >
+                                    {key + 1}
+                                </Button>
+                            )
+                        })}
 
                         <Typography variant="body1" component="h1">
                             Question {currentQuestion + 1}/{result.length}
@@ -145,9 +148,8 @@ const result = () => {
                     </Grid>
                     <Grid item lg={3} sm={3} xs={12}>
                         <Paper className={classes.mytimer}>
-                            <TimerIcon />
                             <Typography variant="h4" component="h1">
-                                Timer
+                                Ads
                             </Typography>
                         </Paper>
                         <Paper className={classes.mytimer}>
