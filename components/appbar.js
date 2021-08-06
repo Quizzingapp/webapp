@@ -219,7 +219,7 @@ export default function ButtonAppBar() {
                                     <HelpRoundedIcon />
                                 </ListItemIcon>
 
-                                <ListItemText primary="About Us" />
+                                <ListItemText primary="AboutUs" />
                             </ListItem>
 
                             <Link href="./login">

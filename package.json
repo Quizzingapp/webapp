@@ -11,6 +11,7 @@
     "@material-ui/icons": "^4.11.2",
     "@mui-treasury/components": "^2.0.0-alpha.1",
     "@mui-treasury/styles": "^2.0.0-alpha.1",
+    "@material-ui/lab": "^4.0.0-alpha.60",
     "easy-peasy": "^5.0.3",
     "firebase": "7.17.0",
     "firebase-admin": "9.0.0",
